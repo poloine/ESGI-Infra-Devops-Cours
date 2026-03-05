@@ -15,7 +15,5 @@ export function getDistance(
     Math.sin(diffLat / 2) * Math.sin(diffLat / 2);
   const line = 2 * Math.atan2(Math.sqrt(arc), Math.sqrt(1 - arc));
 
-  const distance = earthRadius * line;
-
-  return distance;
+  return earthRadius * line;
 }
