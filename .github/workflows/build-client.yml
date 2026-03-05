@@ -1,5 +1,5 @@
 name: Build - client
-run-name: "${{ github.job }}: Build client image for commit ${{ github.sha }}"
+run-name: "${{ github.run_id }}: Build client image for commit ${{ github.ref_name }}"
 on:
     push:
         branches: [ "main" ]
