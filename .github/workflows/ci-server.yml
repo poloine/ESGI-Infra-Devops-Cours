@@ -1,5 +1,5 @@
 name: CI - server
-run-name: "${{ github.run_id }}: Run server tests for commit ${{ github.ref_name }}"
+run-name: "${{ github.run_id }}: Run server tests for commit ${{ github.ref }}"
 on:
   push:
     branches: [ "main" ]
@@ -20,10 +20,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies (server)
-        run: npm ci
+        run: npm install
         working-directory: ./server
 
       - name: Run tests (server)
-        run: npm test --silent
+        run: npm test
         working-directory: ./server
 
