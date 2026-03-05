@@ -36,5 +36,5 @@ services:
   client:
     build: ./client
     ports:
-      - "4173:4173"
+      - "80:80"
     restart: unless-stopped

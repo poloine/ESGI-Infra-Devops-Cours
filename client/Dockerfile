@@ -1,14 +1,13 @@
-FROM node:22-alpine
-
+# builder
+FROM node:18-alpine AS build
 WORKDIR /app
-
 COPY package*.json ./
-RUN npm install
-
+RUN npm ci
 COPY . .
-
 RUN npm run build
 
-EXPOSE 4173
-
-CMD ["npm", "run", "preview", "--", "--host"]
+# runtime: nginx léger pour servir les fichiers statiques
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
