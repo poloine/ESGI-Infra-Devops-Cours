@@ -1,4 +1,4 @@
-name: build.yaml
+name: Build Docker Images and Start Containers
 on: [push]
 
 jobs:
