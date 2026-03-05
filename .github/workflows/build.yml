@@ -1,4 +1,5 @@
-name: Build Docker Images and Start Containers
+name: Build
+run-name: Build Docker Images and Start Containers
 on: [push]
 
 jobs:
