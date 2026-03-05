@@ -1,4 +1,4 @@
-name: Build server
+name: Build - server
 run-name: "${{ github.job }}: Build server image for commit ${{ github.sha }}"
 on:
     push:

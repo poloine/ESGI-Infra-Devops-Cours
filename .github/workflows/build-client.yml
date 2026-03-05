@@ -1,4 +1,4 @@
-name: Build client
+name: Build - client
 run-name: "${{ github.job }}: Build client image for commit ${{ github.sha }}"
 on:
     push:
