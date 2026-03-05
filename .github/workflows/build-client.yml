@@ -1,5 +1,5 @@
 name: Build client
-
+run-name: "${{ github.job }}: Build client image for commit ${{ github.sha }}"
 on:
     push:
         branches: [ "main" ]
@@ -15,4 +15,4 @@ jobs:
         steps:
         - uses: actions/checkout@v5
         - name: Build the client image
-          run: docker build -t client-image:$(date +%s) ./client
+          run: docker build -t client-image:${{ github.sha }} ./client
