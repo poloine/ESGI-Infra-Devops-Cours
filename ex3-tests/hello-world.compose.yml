@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  hello:
+    image: hello-world
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: none
+
+  hello2-byrole:
+    image: hello-world
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  hello2-global:
+    image: hello-world
+    deploy:
+      mode: global
