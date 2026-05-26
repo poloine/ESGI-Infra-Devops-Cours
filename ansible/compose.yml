@@ -1,0 +1,10 @@
+services:
+  manager:
+    build: .
+    privileged: true
+    ports:
+      - "80:80"   # HTTP pour Traefik
+      - "443:443" # HTTPS (optionnel)
+  node:
+    build: .
+    privileged: true
