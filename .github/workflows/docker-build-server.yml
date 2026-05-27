@@ -1,5 +1,5 @@
 name: Docker Build - server
-run-name: "${{ github.run_id }}: Build server image for commit ${{ github.ref }}"
+run-name: "${{ github.run_id }}: Build server image for commit ${{ github.sha.substring(0, 7) }}"
 on:
     push:
         branches: [ "main" ]
@@ -15,4 +15,4 @@ jobs:
         steps:
         - uses: actions/checkout@v5
         - name: Build the server image
-          run: docker build -t server-image:${{ github.sha }} ./server
+          run: docker build -t server-image:${{ github.sha.substring(0, 7) }} ./server
