@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Ce projet a pour objectif de mettre en place une infrastructure DevOps pour une application web. Nous allons utiliser Docker pour containeriser notre application, Github actions pour l'intégration continue et le déploiement continu (CI/CD), et Docker swarm pour l'orchestration de nos conteneurs.
+Ce projet a pour objectif de mettre en place une infrastructure DevOps pour une application web. Nous allons utiliser Docker pour containeriser notre application, Github actions pour l'intégration continue et le déploiement continu (CI/CD), et Docker swarm pour l'orchestration de nos conteneurs
 
 ## Exercices Docker Swarm
 
@@ -10,13 +10,13 @@ Ce projet a pour objectif de mettre en place une infrastructure DevOps pour une 
 
 Docker-in-Docker (DinD) :
 
-Sert à exécuter Docker à l'intérieur d'un conteneur Docker. Cela permet de créer des environnements de développement ou de test isolés, où les développeurs peuvent exécuter des commandes Docker sans affecter leur système hôte. (Ex: images malveillantes, vulnérabilités de sécurité, etc.)
+Sert à exécuter Docker à l'intérieur d'un conteneur Docker. Cela permet de créer des environnements de développement ou de test isolés, où les développeurs peuvent exécuter des commandes Docker sans affecter leur système hôte (Ex: images malveillantes, vulnérabilités de sécurité, etc.)
 Nécessite le droit `privileged` pour fonctionner, ce qui peut poser des risques de sécurité.
 
 Docker-out-of-Docker (DooD) :
 
-Permet à un conteneur d'accéder au démon Docker de l'hôte. Cela signifie que les conteneurs peuvent exécuter des commandes Docker qui affectent directement l'hôte.
-Nécessite de monter le socket Docker de l'hôte dans le conteneur, ce qui peut exposer l'hôte à des risques de sécurité.
+Permet à un conteneur d'accéder au démon Docker de l'hôte. Cela signifie que les conteneurs peuvent exécuter des commandes Docker qui affectent directement l'hôte
+Nécessite de monter le socket Docker de l'hôte dans le conteneur, ce qui peut exposer l'hôte à des risques de sécurité
 
 Comment tester Docker Swarm par DinD :
 1. Créer un conteneur Docker avec l'image DinD.
@@ -127,7 +127,7 @@ docker cp ex3-tests/hello-world.compose.yml manager:/home/manager/
 ```
 ```yaml
 # Pour que /home/manager survivre au redémarrage du container manager :
-# relancer le manager avec un volume anonyme monté sur /home/manager, dans le compose du manager :
+# relancer le manager avec un volume anonyme monté sur /home/manager, dans le compose du manager
    volumes:
      - /home/manager
 ```
@@ -158,7 +158,8 @@ docker exec -it node3 ash
 docker ps -a
 ```
 
-L'image `hello-world` s'exécute et termine immédiatement. En conséquence, les tâches créées par le service seront rapidement en état "Complete/Exited" et il n'y aura pas de containers "running" persistants. Pour observer des containers en fonctionnement, utiliser une image à long running
+L'image `hello-world` s'exécute et termine immédiatement. En conséquence, les tâches créées par le service seront rapidement en état "Complete/Exited" et il n'y aura pas de containers "running" persistants
+Pour observer des containers en fonctionnement, utiliser une image à long running
 
 4) Faire varier la clause `deploy`
 
@@ -262,7 +263,7 @@ Relancer le même playbook :
 bash ansible.sh
 ```
 
-Remarque : le playbook est idempotent. À la deuxième exécution, il ne refait pas `docker swarm init` (car le nœud est déjà manager) et détecte que les workers sont déjà dans le cluster.
+Remarque : le playbook est idempotent. À la deuxième exécution, il ne refait pas `docker swarm init` (car le nœud est déjà manager) et détecte que les workers sont déjà dans le cluster
 
 ### 1.5 - Comprendre Ansible
 
@@ -398,7 +399,7 @@ ansible/
   └── ansible/
       ├── inventory.ini              # Inventaire
       ├── init_swarm_cluster.yml     # Playbook principal
-      └── README.md                  # Documentation spécifique Ansible
+      └── README.md                  # Documentation spécifique Ansible (détails ajouté par IA)
 ```
 
 Installation locale :
@@ -499,7 +500,7 @@ Accéder à l'application Whoami (test) :
 http://whoami.swarm.localhost
 ```
 
-Vérifier que :
+Bien vérifier que :
 - Port 80:80 est exposé sur le manager (visible dans `docker ps`)
 - Réseau overlay `web` est créé et utilisé par les services
 - Services Traefik et Whoami sont en mode `replicated` et `Running`
@@ -509,6 +510,13 @@ Vérifier que :
 127.0.0.1 whoami.swarm.localhost
 ```
 
+![img.png](doc-img/traefik-dashboard.png)
+
+![img.png](doc-img/traefik-routers-table.png)
+
+![img.png](doc-img/traefik-services-table.png)
+
+Résultat whoami :
 ```html
 Hostname: a4f2f9b7b0cd
 IP: 127.0.0.1
@@ -559,6 +567,8 @@ git clone https://github.com/dockersamples/example-voting-app.git
 cd example-voting-app
 docker compose up -d
 ```
+
+![img.png](doc-img/voting-app-compose.png)
 
 ### 2.2 - Déployer la stack sur Docker Swarm
 
@@ -721,37 +731,21 @@ sudo nano /etc/hosts
 127.0.0.1 portainer.swarm.localhost
 ```
 
-Accéder à Portainer :
-```
-http://portainer.swarm.localhost
-```
+Setup Portainer :
+1. Accéder à http://portainer.swarm.localhost
+2. Créer un compte admin
+3. Choisir "Docker Swarm" comme environnement
+4. Sélectionner "Agent"
+5. Nommer et connecter à l'agent `agent:9001`
+6. Valider et accéder au dashboard
 
-Setup :
-Environnement : Docker Swarm
-Connexion : Edge Agent
-Join token : aHR0cDovL3BvcnRhaW5lci5zd2FybS5sb2NhbGhvc3R8cG9ydGFpbmVyLnN3YXJtLmxvY2FsaG9zdDo4MDAwfG9EOFFwVFJ4aG1qV2pWSzBwbFcwYXRNWnNWWVEyaEZ2K0FSM1FOSXAwSzg9fDg
+![img.png](doc-img/portainer-setup-wizard-1.png)
 
-```bash
-docker network create \
-  --driver overlay \
-  portainer_agent_network;
+![img.png](doc-img/portainer-setup-wizard-2.png)
 
-docker service create \
-  --name portainer_edge_agent \
-  --network portainer_agent_network \
-  -e EDGE=1 \
-  -e EDGE_ID=e63c15d6-4436-4778-9e70-50e0bdd9ba30 \
-  -e EDGE_KEY=aHR0cDovL3BvcnRhaW5lci5zd2FybS5sb2NhbGhvc3R8cG9ydGFpbmVyLnN3YXJtLmxvY2FsaG9zdDo4MDAwfG9EOFFwVFJ4aG1qV2pWSzBwbFcwYXRNWnNWWVEyaEZ2K0FSM1FOSXAwSzg9fDg \
-  -e EDGE_INSECURE_POLL=1 \
-  -e AGENT_CLUSTER_ADDR=tasks.portainer_edge_agent \
-  --mode global \
-  --constraint 'node.platform.os == linux' \
-  --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock \
-  --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/volumes \
-  --mount type=bind,src=//,dst=/host \
-  --mount type=volume,src=portainer_agent_data,dst=/data \
-  portainer/agent:2.39.2
-```
+![img.png](doc-img/portainer-docker-swarm-env-live.png)
+
+![img.png](doc-img/portainer-docker-swarm-details.png)
 
 ## Exercice 4 - Re-déployer l'app de votes
 
@@ -804,6 +798,10 @@ http://portainer.swarm.localhost
 
 6. Cliquer sur Deploy the stack
 
+![img.png](doc-img/portainer-deploy-stack-wizard.png)
+
+![img.png](doc-img/portainer-voting-app-stack-deployed.png)
+
 Vérification :
 
 ```bash
@@ -828,4 +826,5 @@ hp805vqmri8d   voting_app_result   replicated   1/1        dockersamples/example
 3t8c32ybljfi   voting_app_vote     replicated   2/2        dockersamples/examplevotingapp_vote:latest     
 tecwc8jmtkxl   voting_app_worker   replicated   2/2        dockersamples/examplevotingapp_worker:latest   
 ```
+
 
