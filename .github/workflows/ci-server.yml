@@ -1,5 +1,5 @@
 name: CI - server
-run-name: "${{ github.run_id }}: Run server tests for commit ${{ github.ref }}"
+run-name: "${{ github.run_number }}: Run server tests for commit ${{ github.sha }}"
 on:
   push:
     branches: [ "main" ]

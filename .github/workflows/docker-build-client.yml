@@ -1,5 +1,5 @@
 name: Docker Build - client
-run-name: "${{ github.run_id }}: Build client image for commit ${{ github.ref }}"
+run-name: "${{ github.run_number }}: Build client image for commit ${{ github.sha }}"
 on:
     push:
         branches: [ "main" ]
